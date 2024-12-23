@@ -1,0 +1,12 @@
+---
+- hosts: all
+  become: true # this will run the task with root priviledges.
+
+  tasks:
+    - name: Shutdown ubuntu instances only
+      # builtin module of ansible 
+      ansible.builtin.command: 
+        /sbin/shutdown -t now
+      # Terminate the debian instances only
+      when:
+       ansible_facts['os_family'] == "Debian"

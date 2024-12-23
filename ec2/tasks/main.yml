@@ -1,0 +1,21 @@
+---
+# tasks file for ec2
+- name: Create EC2 instances
+  amazon.aws.ec2_instance:
+    name: "{{ item.name }}"
+    key_name: "aws-ec2-keypair" # AWS create the instances using this keypair value
+    instance_type: t2.micro
+    security_group: default
+    region: us-east-1
+    aws_access_key: "{{ec2_access_key}}"  # From vault as defined
+    aws_secret_key: "{{ec2_secret_key}}"  # From vault as defined      
+    network:
+      assign_public_ip: true
+    image_id: "{{ item.image }}" 
+    tags:
+      environment: "{{ item.name }}"
+  loop:
+  # this loop will iterate the above task for each and every item listed below
+    - { image: "ami-01816d07b1128cd2d", name: "manage-node-1" } # ami-id for centos
+    - { image: "ami-0e2c8caa4b6378d8c", name: "manage-node-2" } # ami-id for debian
+    - { image: "ami-0e2c8caa4b6378d8c", name: "manage-node-3" } # ami-id for debian

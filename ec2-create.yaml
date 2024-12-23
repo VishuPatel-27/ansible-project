@@ -1,0 +1,6 @@
+---
+# here we are using the AWS collection for ansible
+- hosts: localhost
+  connection: local
+  roles:
+    - ec2
